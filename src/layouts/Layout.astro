@@ -1,0 +1,152 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { 
+  title = "AIDMUR - Asociación de Interinos Docentes de la Región de Murcia", 
+  description = "Archivo histórico y comunicados oficiales de AIDMUR. Información sobre empleo docente, oposiciones, acuerdos y defensa de los interinos en la Región de Murcia.",
+  image = "/uploads/2014/05/cropped-logoaidmur.jpg"
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    {image && <meta property="og:image" content={image} />}
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-container">
+        <a href="/" class="brand-logo" id="header-brand-link">
+          <span class="brand-badge">AIDMUR</span>
+          <span class="brand-subtext">Docentes Interinos Murcia</span>
+        </a>
+
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Abrir menú" aria-expanded="false">
+          ☰
+        </button>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="/" class="nav-link">Inicio</a></li>
+          <li><a href="/articulos" class="nav-link">Comunicados</a></li>
+          <li><a href="/pagina/sobre-aidmur" class="nav-link">Sobre AIDMUR</a></li>
+          <li><a href="/pagina/notas-de-prensa" class="nav-link">Notas de Prensa</a></li>
+          <li><a href="/pagina/denuncias" class="nav-link">Denuncias</a></li>
+          <li><a href="/pagina/noticias-aidmur" class="nav-link">En Medios</a></li>
+          <li><a href="/pagina/galeria" class="nav-link">Galería</a></li>
+          <li class="nav-cta-item">
+            <a href="/pagina/unete-a-aidmur-por-solo-10-euros" class="btn-nav-cta">
+              Únete a AIDMUR
+            </a>
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    <main style="flex: 1;">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="brand-logo" style="color: white; margin-bottom: 1rem;">
+              <span class="brand-badge">AIDMUR</span>
+              <span>Docentes de Murcia</span>
+            </div>
+            <p style="font-size: 0.9rem; line-height: 1.6; color: #94a3b8; margin-bottom: 1.5rem;">
+              Asociación de Interinos Docentes de la Región de Murcia. Defendiendo la educación pública de calidad, la estabilidad del profesorado y la transparencia en las contrataciones docentes.
+            </p>
+            <div style="font-size: 0.82rem; color: #64748b;">
+              Sitio web estático optimizado desplegado en Vercel.
+            </div>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Secciones Clave</h4>
+            <ul class="footer-links">
+              <li><a href="/pagina/sobre-aidmur" class="footer-link">Sobre la Asociación</a></li>
+              <li><a href="/pagina/notas-de-prensa" class="footer-link">Notas de Prensa</a></li>
+              <li><a href="/pagina/noticias-aidmur" class="footer-link">Apariciones en Medios</a></li>
+              <li><a href="/pagina/denuncias" class="footer-link">Denuncias y Recursos</a></li>
+              <li><a href="/pagina/coordinadora-estatal-de-interinos" class="footer-link">Coordinadora Estatal</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Archivo Histórico</h4>
+            <ul class="footer-links">
+              <li><a href="/articulos" class="footer-link">Todos los Comunicados (287)</a></li>
+              <li><a href="/categoria/interinos" class="footer-link">Interinos</a></li>
+              <li><a href="/categoria/educacion" class="footer-link">Educación</a></li>
+              <li><a href="/categoria/consejeria" class="footer-link">Consejería</a></li>
+              <li><a href="/categoria/oposiciones" class="footer-link">Oposiciones</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Participación</h4>
+            <ul class="footer-links">
+              <li><a href="/pagina/unete-a-aidmur-por-solo-10-euros" class="footer-link">Cómo afiliarse</a></li>
+              <li><a href="/pagina/galeria" class="footer-link">Galería de fotos</a></li>
+              <li><a href="/pagina/recurso-de-casacion-ante-el-tribunal-supremo-mismotrabajomismosalario" class="footer-link">Recurso Supremo</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© {new Date().getFullYear()} AIDMUR. Todos los derechos reservados. Archivo histórico preservado.</p>
+          <div style="display: flex; gap: 1.5rem;">
+            <a href="/" style="color: #94a3b8; font-size: 0.85rem;">Inicio</a>
+            <a href="/articulos" style="color: #94a3b8; font-size: 0.85rem;">Archivo</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <button id="back-to-top" class="back-to-top" aria-label="Volver arriba" title="Volver arriba">
+      ↑
+    </button>
+
+    <script is:inline>
+      const toggle = document.getElementById('mobile-toggle');
+      const navLinks = document.getElementById('nav-links');
+      if (toggle && navLinks) {
+        toggle.addEventListener('click', () => {
+          const isOpen = navLinks.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+      }
+
+      const backToTop = document.getElementById('back-to-top');
+      if (backToTop) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 400) {
+            backToTop.classList.add('visible');
+          } else {
+            backToTop.classList.remove('visible');
+          }
+        });
+        backToTop.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,306 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import posts from '../../data/posts.json';
+import categories from '../../data/categories.json';
+
+const years = Array.from(new Set(posts.map(p => new Date(p.date).getFullYear()))).sort((a, b) => b - a);
+
+function formatDate(dateStr: string) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('es-ES', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
+}
+---
+
+<Layout 
+  title="Archivo de Comunicados y Noticias - AIDMUR" 
+  description="Archivo completo de todos los comunicados, notas informativas y convocatorias de AIDMUR."
+>
+  <div style="background: white; border-bottom: 1px solid #e2e8f0; padding: 3rem 0 2rem;">
+    <div class="container">
+      <nav style="display: flex; gap: 0.5rem; font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">
+        <a href="/" style="color: #64748b;">Inicio</a>
+        <span>/</span>
+        <span style="color: #0f172a; font-weight: 600;">Archivo de Comunicados</span>
+      </nav>
+      <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem;">
+        Archivo de Comunicados
+      </h1>
+      <p style="color: #64748b; font-size: 1.05rem;">
+        Explora los {posts.length} comunicados y resoluciones publicadas por AIDMUR.
+      </p>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top: 2.5rem; padding-bottom: 4rem;">
+    <!-- Filter & Search Controls Bar -->
+    <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+      <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem;" id="filter-grid">
+        <div>
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 0.35rem; text-transform: uppercase;">
+            Buscar por texto
+          </label>
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="Escribe título o palabra clave..." 
+            style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; outline: none;"
+          />
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 0.35rem; text-transform: uppercase;">
+            Categoría
+          </label>
+          <select 
+            id="category-select" 
+            style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; outline: none; background: white;"
+          >
+            <option value="">Todas las categorías</option>
+            {categories.map((cat) => (
+              <option value={cat.slug}>{cat.name} ({cat.count})</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 0.35rem; text-transform: uppercase;">
+            Año
+          </label>
+          <select 
+            id="year-select" 
+            style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; outline: none; background: white;"
+          >
+            <option value="">Todos los años</option>
+            {years.map((y) => (
+              <option value={y.toString()}>{y}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid #f1f5f9; font-size: 0.88rem; color: #64748b;">
+        <span id="results-count">Mostrando <strong>{posts.length}</strong> comunicados</span>
+        <button id="clear-btn" style="background: none; border: none; color: #059669; font-weight: 600; cursor: pointer; display: none;">
+          Limpiar filtros ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Articles Grid -->
+    <div class="cards-grid" id="articles-container">
+      {posts.map((post) => {
+        const postYear = new Date(post.date).getFullYear().toString();
+        const catSlugs = post.categories.map(c => c.slug).join(' ');
+        const searchTerms = `${post.title} ${post.excerpt}`.toLowerCase();
+        
+        return (
+          <article 
+            class="article-card filterable-post" 
+            data-title={post.title.toLowerCase()}
+            data-year={postYear}
+            data-categories={catSlugs}
+            data-search={searchTerms}
+          >
+            {post.featured_image ? (
+              <div class="article-card-media">
+                <img src={post.featured_image} alt={post.title} class="article-card-img" loading="lazy" />
+              </div>
+            ) : (
+              <div class="article-card-media article-card-placeholder">
+                <span>📝</span>
+              </div>
+            )}
+            
+            <div class="article-card-body">
+              <div class="article-meta">
+                <time datetime={post.date}>📅 {formatDate(post.date)}</time>
+                {post.categories.length > 0 && (
+                  <span class="badge" style="font-size: 0.7rem; padding: 0.15rem 0.5rem;">{post.categories[0].name}</span>
+                )}
+              </div>
+
+              <h3 class="article-card-title">
+                <a href={`/articulo/${post.slug}`} style="color: inherit; text-decoration: none;">
+                  {post.title}
+                </a>
+              </h3>
+
+              <p class="article-card-excerpt">
+                {post.excerpt}
+              </p>
+
+              <div class="article-card-footer">
+                <span style="font-size: 0.82rem; color: #64748b;">Por {post.author}</span>
+                <a href={`/articulo/${post.slug}`} style="font-size: 0.88rem; font-weight: 700; color: #059669;">
+                  Leer más →
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <!-- Pagination Controls -->
+    <div id="pagination-controls" style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 3.5rem; flex-wrap: wrap;"></div>
+
+    <div id="no-results" style="display: none; text-align: center; padding: 4rem 1rem; background: white; border-radius: 12px; border: 1px solid #e2e8f0;">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+      <h3 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem;">No se encontraron comunicados</h3>
+      <p style="color: #64748b; font-size: 0.95rem;">Prueba con otros términos de búsqueda o elimina los filtros aplicados.</p>
+    </div>
+  </div>
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input');
+    const categorySelect = document.getElementById('category-select');
+    const yearSelect = document.getElementById('year-select');
+    const clearBtn = document.getElementById('clear-btn');
+    const resultsCount = document.getElementById('results-count');
+    const noResults = document.getElementById('no-results');
+    const paginationControls = document.getElementById('pagination-controls');
+    const articles = Array.from(document.querySelectorAll('.filterable-post'));
+
+    const ITEMS_PER_PAGE = 12;
+    let currentPage = 1;
+    let matchingArticles = [...articles];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const qParam = urlParams.get('q');
+    if (qParam && searchInput) {
+      searchInput.value = qParam;
+    }
+
+    function renderPage() {
+      const total = matchingArticles.length;
+      const totalPages = Math.ceil(total / ITEMS_PER_PAGE) || 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      // Hide all first
+      articles.forEach(card => card.style.display = 'none');
+
+      // Show current slice
+      const start = (currentPage - 1) * ITEMS_PER_PAGE;
+      const end = start + ITEMS_PER_PAGE;
+      matchingArticles.slice(start, end).forEach(card => card.style.display = 'flex');
+
+      if (resultsCount) {
+        resultsCount.innerHTML = `Mostrando <strong>${total}</strong> comunicados (Página ${currentPage} de ${totalPages})`;
+      }
+      if (noResults) {
+        noResults.style.display = total === 0 ? 'block' : 'none';
+      }
+
+      // Render pagination buttons
+      if (!paginationControls) return;
+      if (totalPages <= 1) {
+        paginationControls.innerHTML = '';
+        return;
+      }
+
+      let html = '';
+      if (currentPage > 1) {
+        html += `<button class="page-btn" data-page="${currentPage - 1}">← Anterior</button>`;
+      }
+
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+          const isActive = i === currentPage ? 'active' : '';
+          html += `<button class="page-btn ${isActive}" data-page="${i}">${i}</button>`;
+        } else if (i === currentPage - 3 || i === currentPage + 3) {
+          html += `<span style="color:#94a3b8; padding: 0 0.25rem;">...</span>`;
+        }
+      }
+
+      if (currentPage < totalPages) {
+        html += `<button class="page-btn" data-page="${currentPage + 1}">Siguiente →</button>`;
+      }
+
+      paginationControls.innerHTML = html;
+
+      paginationControls.querySelectorAll('.page-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          currentPage = parseInt(btn.getAttribute('data-page') || '1');
+          renderPage();
+          window.scrollTo({ top: 300, behavior: 'smooth' });
+        });
+      });
+    }
+
+    function filterArticles() {
+      const q = (searchInput?.value || '').toLowerCase().trim();
+      const cat = categorySelect?.value || '';
+      const year = yearSelect?.value || '';
+
+      const hasFilters = q !== '' || cat !== '' || year !== '';
+      if (clearBtn) {
+        clearBtn.style.display = hasFilters ? 'inline-block' : 'none';
+      }
+
+      matchingArticles = articles.filter((card) => {
+        const cSearch = card.getAttribute('data-search') || '';
+        const cYear = card.getAttribute('data-year') || '';
+        const cCats = card.getAttribute('data-categories') || '';
+
+        const matchesQ = !q || cSearch.includes(q);
+        const matchesCat = !cat || cCats.includes(cat);
+        const matchesYear = !year || cYear === year;
+
+        return matchesQ && matchesCat && matchesYear;
+      });
+
+      currentPage = 1;
+      renderPage();
+    }
+
+    searchInput?.addEventListener('input', filterArticles);
+    categorySelect?.addEventListener('change', filterArticles);
+    yearSelect?.addEventListener('change', filterArticles);
+
+    clearBtn?.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      if (categorySelect) categorySelect.value = '';
+      if (yearSelect) yearSelect.value = '';
+      filterArticles();
+    });
+
+    filterArticles();
+  });
+</script>
+
+<style>
+  :global(.page-btn) {
+    background: white;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    padding: 0.5rem 0.95rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  :global(.page-btn:hover) {
+    border-color: #059669;
+    color: #059669;
+    background: #ecfdf5;
+  }
+  :global(.page-btn.active) {
+    background: #059669;
+    border-color: #059669;
+    color: white;
+  }
+  @media (max-width: 768px) {
+    #filter-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

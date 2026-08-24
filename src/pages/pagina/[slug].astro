@@ -1,0 +1,66 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import pages from '../../data/pages.json';
+
+export function getStaticPaths() {
+  return pages.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+
+function formatDate(dateStr: string) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('es-ES', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+}
+---
+
+<Layout 
+  title={`${page.title} - AIDMUR`} 
+  description={page.excerpt || `Página oficial de ${page.title} - AIDMUR`}
+>
+  <div style="background: white; border-bottom: 1px solid #e2e8f0; padding: 3.5rem 0 2.5rem;">
+    <div class="container article-container">
+      <nav style="display: flex; gap: 0.5rem; font-size: 0.85rem; color: #64748b; margin-bottom: 1.25rem;">
+        <a href="/" style="color: #64748b;">Inicio</a>
+        <span>/</span>
+        <span style="color: #0f172a; font-weight: 600;">{page.title}</span>
+      </nav>
+
+      <div style="display: inline-block; background: #ecfdf5; color: #047857; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 0.25rem 0.65rem; border-radius: 9999px; margin-bottom: 0.75rem;">
+        Página Institucional
+      </div>
+
+      <h1 style="font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 800; color: #0f172a; line-height: 1.2;">
+        {page.title}
+      </h1>
+    </div>
+  </div>
+
+  <div class="container article-container" style="padding-top: 3rem; padding-bottom: 5rem;">
+    {page.featured_image && (
+      <div style="margin-bottom: 2.5rem; border-radius: 12px; overflow: hidden;">
+        <img src={page.featured_image} alt={page.title} style="width: 100%; max-height: 450px; object-fit: cover;" />
+      </div>
+    )}
+
+    <!-- HTML Content -->
+    <div class="prose" set:html={page.content} />
+
+    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 1rem;">
+      <a href="/" class="btn-secondary">
+        ← Volver al inicio
+      </a>
+      <a href="/pagina/unete-a-aidmur-por-solo-10-euros" class="btn-primary">
+        Únete a AIDMUR →
+      </a>
+    </div>
+  </div>
+</Layout>

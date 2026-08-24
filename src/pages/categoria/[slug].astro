@@ -1,0 +1,100 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import posts from '../../data/posts.json';
+import categories from '../../data/categories.json';
+
+export function getStaticPaths() {
+  return categories.map((category) => {
+    const filteredPosts = posts.filter(p => 
+      p.categories.some(c => c.slug === category.slug)
+    );
+    return {
+      params: { slug: category.slug },
+      props: { category, filteredPosts },
+    };
+  });
+}
+
+const { category, filteredPosts } = Astro.props;
+
+function formatDate(dateStr: string) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('es-ES', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
+}
+---
+
+<Layout 
+  title={`Categoría: ${category.name} (${filteredPosts.length}) - AIDMUR`}
+  description={`Comunicados y noticias de AIDMUR en la categoría ${category.name}.`}
+>
+  <div style="background: white; border-bottom: 1px solid #e2e8f0; padding: 3rem 0 2rem;">
+    <div class="container">
+      <nav style="display: flex; gap: 0.5rem; font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">
+        <a href="/" style="color: #64748b;">Inicio</a>
+        <span>/</span>
+        <a href="/articulos" style="color: #64748b;">Comunicados</a>
+        <span>/</span>
+        <span style="color: #0f172a; font-weight: 600;">Categoría: {category.name}</span>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span class="badge" style="font-size: 0.9rem; padding: 0.35rem 0.85rem;">Categoría</span>
+        <span style="color: #64748b; font-size: 1rem;">{filteredPosts.length} artículos</span>
+      </div>
+      <h1 style="font-size: 2.5rem; font-weight: 800; color: #0f172a; margin-top: 0.5rem;">
+        {category.name}
+      </h1>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top: 2.5rem; padding-bottom: 5rem;">
+    <div class="cards-grid">
+      {filteredPosts.map((post) => (
+        <article class="article-card">
+          {post.featured_image ? (
+            <div class="article-card-media">
+              <img src={post.featured_image} alt={post.title} class="article-card-img" loading="lazy" />
+            </div>
+          ) : (
+            <div class="article-card-media article-card-placeholder">
+              <span>📝</span>
+            </div>
+          )}
+          
+          <div class="article-card-body">
+            <div class="article-meta">
+              <time datetime={post.date}>📅 {formatDate(post.date)}</time>
+            </div>
+
+            <h3 class="article-card-title">
+              <a href={`/articulo/${post.slug}`} style="color: inherit; text-decoration: none;">
+                {post.title}
+              </a>
+            </h3>
+
+            <p class="article-card-excerpt">
+              {post.excerpt}
+            </p>
+
+            <div class="article-card-footer">
+              <span style="font-size: 0.82rem; color: #64748b;">Por {post.author}</span>
+              <a href={`/articulo/${post.slug}`} style="font-size: 0.88rem; font-weight: 700; color: #059669;">
+                Leer más →
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div style="text-align: center; margin-top: 3.5rem;">
+      <a href="/articulos" class="btn-secondary">
+        ← Ver todas las categorías y comunicados
+      </a>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,112 @@
+[
+  {
+    "name": "Interinos",
+    "slug": "interinos",
+    "count": 279
+  },
+  {
+    "name": "Educación",
+    "slug": "educacion",
+    "count": 64
+  },
+  {
+    "name": "Consejería",
+    "slug": "consejeria",
+    "count": 59
+  },
+  {
+    "name": "docentes",
+    "slug": "docentes",
+    "count": 43
+  },
+  {
+    "name": "murcia",
+    "slug": "murcia",
+    "count": 43
+  },
+  {
+    "name": "Informaciones",
+    "slug": "informaciones",
+    "count": 33
+  },
+  {
+    "name": "AIDMUR",
+    "slug": "aidmur",
+    "count": 32
+  },
+  {
+    "name": "oposiciones",
+    "slug": "oposiciones",
+    "count": 26
+  },
+  {
+    "name": "Movilizaciones",
+    "slug": "movilizaciones",
+    "count": 25
+  },
+  {
+    "name": "maestros",
+    "slug": "maestros",
+    "count": 24
+  },
+  {
+    "name": "recortes",
+    "slug": "recortes",
+    "count": 17
+  },
+  {
+    "name": "verano",
+    "slug": "verano",
+    "count": 14
+  },
+  {
+    "name": "Adjudicaciones",
+    "slug": "adjudicaciones",
+    "count": 7
+  },
+  {
+    "name": "sindicatos",
+    "slug": "sindicatos",
+    "count": 6
+  },
+  {
+    "name": "Tribunal Supremo",
+    "slug": "tribunal-supremo",
+    "count": 4
+  },
+  {
+    "name": "revalidas",
+    "slug": "revalidas",
+    "count": 2
+  },
+  {
+    "name": "Veranos",
+    "slug": "veranos",
+    "count": 1
+  },
+  {
+    "name": "PNL",
+    "slug": "pnl",
+    "count": 1
+  },
+  {
+    "name": "Congreso de los diputados",
+    "slug": "congreso-de-los-diputados",
+    "count": 1
+  },
+  {
+    "name": "Podemos",
+    "slug": "podemos",
+    "count": 1
+  },
+  {
+    "name": "maternidad",
+    "slug": "maternidad",
+    "count": 1
+  },
+  {
+    "name": "elecciones",
+    "slug": "elecciones",
+    "count": 1
+  }
+]

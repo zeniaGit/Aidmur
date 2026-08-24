@@ -1,0 +1,122 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import posts from '../../data/posts.json';
+
+export function getStaticPaths() {
+  return posts.map((post, index) => {
+    const prevPost = index < posts.length - 1 ? posts[index + 1] : null;
+    const nextPost = index > 0 ? posts[index - 1] : null;
+    return {
+      params: { slug: post.slug },
+      props: { post, prevPost, nextPost },
+    };
+  });
+}
+
+const { post, prevPost, nextPost } = Astro.props;
+
+function formatDate(dateStr: string) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('es-ES', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+}
+---
+
+<Layout 
+  title={`${post.title} - AIDMUR`} 
+  description={post.excerpt}
+  image={post.featured_image || undefined}
+>
+  <article style="background: white; border-bottom: 1px solid #e2e8f0; padding: 3rem 0 2.5rem;">
+    <div class="article-container container">
+      <!-- Breadcrumb -->
+      <nav style="display: flex; gap: 0.5rem; font-size: 0.85rem; color: #64748b; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <a href="/" style="color: #64748b;">Inicio</a>
+        <span>/</span>
+        <a href="/articulos" style="color: #64748b;">Comunicados</a>
+        <span>/</span>
+        <span style="color: #0f172a; font-weight: 600;">{post.title}</span>
+      </nav>
+
+      <!-- Category Badges -->
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+        {post.categories.map((cat) => (
+          <a href={`/categoria/${cat.slug}`} class="badge" style="text-decoration: none;">
+            {cat.name}
+          </a>
+        ))}
+      </div>
+
+      <!-- Title -->
+      <h1 style="font-size: clamp(1.85rem, 4vw, 2.75rem); font-weight: 800; color: #0f172a; line-height: 1.25; margin-bottom: 1.25rem;">
+        {post.title}
+      </h1>
+
+      <!-- Meta info -->
+      <div style="display: flex; align-items: center; gap: 1.25rem; font-size: 0.92rem; color: #64748b; padding-bottom: 1.5rem; border-bottom: 1px solid #f1f5f9; flex-wrap: wrap;">
+        <span>📅 <strong>Publicado:</strong> {formatDate(post.date)}</span>
+        <span>✍️ <strong>Autor:</strong> {post.author}</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- Article Main Content -->
+  <div class="container article-container" style="padding-top: 3rem; padding-bottom: 5rem;">
+    {post.featured_image && (
+      <div style="margin-bottom: 2.5rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+        <img src={post.featured_image} alt={post.title} style="width: 100%; max-height: 500px; object-fit: cover;" />
+      </div>
+    )}
+
+    <!-- HTML Content rendered from WP -->
+    <div class="prose" set:html={post.content} />
+
+    <!-- Tags if any -->
+    {post.tags && post.tags.length > 0 && (
+      <div style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+        <span style="font-size: 0.85rem; font-weight: 700; color: #475569; margin-right: 0.5rem;">Etiquetas:</span>
+        <div style="display: inline-flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
+          {post.tags.map((tag) => (
+            <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 4px;">
+              #{tag.name}
+            </span>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Navigation Prev / Next Post -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 4rem; padding-top: 2rem; border-top: 2px solid #f1f5f9;">
+      {prevPost ? (
+        <a 
+          href={`/articulo/${prevPost.slug}`} 
+          style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.25rem; text-decoration: none; display: flex; flex-direction: column; transition: all 0.2s ease;"
+        >
+          <span style="font-size: 0.8rem; font-weight: 700; color: #059669; text-transform: uppercase; margin-bottom: 0.25rem;">← Anterior</span>
+          <span style="font-size: 0.95rem; font-weight: 600; color: #0f172a; line-height: 1.3;">{prevPost.title}</span>
+        </a>
+      ) : <div />}
+
+      {nextPost ? (
+        <a 
+          href={`/articulo/${nextPost.slug}`} 
+          style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.25rem; text-decoration: none; display: flex; flex-direction: column; text-align: right; transition: all 0.2s ease;"
+        >
+          <span style="font-size: 0.8rem; font-weight: 700; color: #059669; text-transform: uppercase; margin-bottom: 0.25rem;">Siguiente →</span>
+          <span style="font-size: 0.95rem; font-weight: 600; color: #0f172a; line-height: 1.3;">{nextPost.title}</span>
+        </a>
+      ) : <div />}
+    </div>
+
+    <!-- Back to archive button -->
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="/articulos" class="btn-secondary">
+        ← Volver al archivo completo de comunicados
+      </a>
+    </div>
+  </div>
+</Layout>
