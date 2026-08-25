@@ -632,3 +632,52 @@ button, input, select, textarea {
     grid-template-columns: 1fr;
   }
 }
+
+.footer-bottom-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer-bottom-link {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+
+.footer-bottom-link:hover {
+  color: #ffffff;
+}
+
+.footer-divider {
+  color: #475569;
+  font-size: 0.8rem;
+}
+
+.footer-author-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-author-credit:hover {
+  color: #ffffff;
+}
+
+.footer-author-credit:hover .footer-author-logo {
+  opacity: 1;
+  filter: drop-shadow(0 0 6px rgba(20, 179, 178, 0.4));
+}
+
+.footer-author-logo {
+  height: 16px;
+  width: auto;
+  opacity: 0.85;
+  transition: all 0.2s ease;
+  vertical-align: middle;
+}
