@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import pages from '../../data/pages.json';
+import DenunciasSection from '../../components/DenunciasSection.astro';
 
 export function getStaticPaths() {
   return pages.map((page) => ({
@@ -51,8 +52,11 @@ function formatDate(dateStr: string) {
       </div>
     )}
 
-    <!-- HTML Content -->
-    <div class="prose" set:html={page.content} />
+    {page.slug === 'denuncias' ? (
+      <DenunciasSection />
+    ) : (
+      <div class="prose" set:html={page.content} />
+    )}
 
     <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 1rem;">
       <a href="/" class="btn-secondary">
