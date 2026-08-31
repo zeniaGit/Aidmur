@@ -1,19 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import posts from '../../data/posts.json';
+import { getAllPosts, getPostBySlug } from '../../lib/posts';
 
-export function getStaticPaths() {
-  return posts.map((post, index) => {
-    const prevPost = index < posts.length - 1 ? posts[index + 1] : null;
-    const nextPost = index > 0 ? posts[index - 1] : null;
-    return {
-      params: { slug: post.slug },
-      props: { post, prevPost, nextPost },
-    };
-  });
+export const prerender = false;
+
+const { slug } = Astro.params;
+if (!slug) {
+  return Astro.redirect('/articulos');
 }
 
-const { post, prevPost, nextPost } = Astro.props;
+const allPosts = getAllPosts(false);
+const post = allPosts.find(p => p.slug === slug);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const index = allPosts.findIndex(p => p.slug === slug);
+const prevPost = index < allPosts.length - 1 ? allPosts[index + 1] : null;
+const nextPost = index > 0 ? allPosts[index - 1] : null;
 
 function formatDate(dateStr: string) {
   if (!dateStr) return '';
@@ -29,7 +34,7 @@ function formatDate(dateStr: string) {
 <Layout 
   title={`${post.title} - AIDMUR`} 
   description={post.excerpt}
-  image={post.featured_image || undefined}
+  image={post.featured_image || post.top_image || undefined}
 >
   <article style="background: white; border-bottom: 1px solid #e2e8f0; padding: 3rem 0 2.5rem;">
     <div class="article-container container">
@@ -44,7 +49,7 @@ function formatDate(dateStr: string) {
 
       <!-- Category Badges -->
       <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
-        {post.categories.map((cat) => (
+        {post.categories?.map((cat) => (
           <a href={`/categoria/${cat.slug}`} class="badge" style="text-decoration: none;">
             {cat.name}
           </a>
@@ -59,20 +64,20 @@ function formatDate(dateStr: string) {
       <!-- Meta info -->
       <div style="display: flex; align-items: center; gap: 1.25rem; font-size: 0.92rem; color: #64748b; padding-bottom: 1.5rem; border-bottom: 1px solid #f1f5f9; flex-wrap: wrap;">
         <span>📅 <strong>Publicado:</strong> {formatDate(post.date)}</span>
-        <span>✍️ <strong>Autor:</strong> {post.author}</span>
+        <span>✍️ <strong>Autor:</strong> {post.author || 'AIDMUR'}</span>
       </div>
     </div>
   </article>
 
   <!-- Article Main Content -->
   <div class="container article-container" style="padding-top: 3rem; padding-bottom: 5rem;">
-    {post.featured_image && (
+    {post.featured_image && !post.top_image && (
       <div style="margin-bottom: 2.5rem; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
         <img src={post.featured_image} alt={post.title} style="width: 100%; max-height: 500px; object-fit: cover;" />
       </div>
     )}
 
-    <!-- HTML Content rendered from WP -->
+    <!-- HTML Content -->
     <div class="prose" set:html={post.content} />
 
     <!-- Tags if any -->

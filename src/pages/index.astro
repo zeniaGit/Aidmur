@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import posts from '../data/posts.json';
+import { getAllPosts } from '../lib/posts';
 import categories from '../data/categories.json';
 
+const posts = getAllPosts(false);
 const latestPosts = posts.slice(0, 9);
 const totalPosts = posts.length;
 

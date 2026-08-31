@@ -1,4 +1,4 @@
-import posts from '../data/posts.json';
+import { getAllPosts } from '../lib/posts';
 import pages from '../data/pages.json';
 import categories from '../data/categories.json';
 
@@ -22,6 +22,7 @@ export async function GET() {
     changefreq: 'weekly',
   }));
 
+  const posts = getAllPosts(false);
   const postUrls = posts.map((p) => ({
     loc: `${siteUrl}/articulo/${p.slug}`,
     lastmod: p.date ? new Date(p.date).toISOString().split('T')[0] : undefined,

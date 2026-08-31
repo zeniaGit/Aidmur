@@ -1,8 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import posts from '../../data/posts.json';
+import { getAllPosts } from '../../lib/posts';
 import categories from '../../data/categories.json';
 
+const posts = getAllPosts(false);
 const years = Array.from(new Set(posts.map(p => new Date(p.date).getFullYear()))).sort((a, b) => b - a);
 
 function formatDate(dateStr: string) {
