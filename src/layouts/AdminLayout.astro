@@ -47,6 +47,7 @@ const { title = 'Panel de Administración - AIDMUR', username = 'Administrador' 
         min-height: 100vh;
         display: flex;
         flex-direction: column;
+        overflow-x: hidden;
       }
 
       .admin-navbar {
@@ -61,26 +62,29 @@ const { title = 'Panel de Administración - AIDMUR', username = 'Administrador' 
       .nav-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0.85rem 1.5rem;
+        padding: 0.75rem 1.25rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: wrap;
       }
 
       .brand-group {
         display: flex;
         align-items: center;
-        gap: 0.85rem;
+        gap: 0.65rem;
         text-decoration: none;
         color: var(--color-slate-900);
+        flex-shrink: 0;
       }
 
       .brand-badge {
         background: var(--color-primary-light);
         color: var(--color-primary-dark);
-        font-size: 0.75rem;
+        font-size: 0.72rem;
         font-weight: 700;
-        padding: 0.2rem 0.55rem;
+        padding: 0.15rem 0.45rem;
         border-radius: 6px;
         border: 1px solid #a7f3d0;
         text-transform: uppercase;
@@ -90,21 +94,24 @@ const { title = 'Panel de Administración - AIDMUR', username = 'Administrador' 
       .nav-actions {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 0.5rem;
+        flex-wrap: wrap;
       }
 
       .btn {
         display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
-        padding: 0.55rem 1rem;
+        justify-content: center;
+        gap: 0.35rem;
+        padding: 0.5rem 0.85rem;
         border-radius: 8px;
-        font-size: 0.88rem;
+        font-size: 0.82rem;
         font-weight: 600;
         text-decoration: none;
         transition: all 0.15s ease;
         cursor: pointer;
         border: 1px solid transparent;
+        white-space: nowrap;
       }
 
       .btn-primary {
@@ -142,7 +149,7 @@ const { title = 'Panel de Administración - AIDMUR', username = 'Administrador' 
         max-width: 1200px;
         width: 100%;
         margin: 0 auto;
-        padding: 2rem 1.5rem 4rem;
+        padding: 1.5rem 1rem 3.5rem;
       }
 
       .card {
@@ -150,7 +157,40 @@ const { title = 'Panel de Administración - AIDMUR', username = 'Administrador' 
         border: 1px solid var(--color-slate-200);
         border-radius: 12px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        padding: 1.5rem;
+        padding: 1.25rem;
+      }
+
+      /* Mobile Navigation Optimization */
+      @media (max-width: 640px) {
+        .nav-container {
+          padding: 0.6rem 0.85rem;
+        }
+
+        .brand-group span.brand-name {
+          font-size: 1rem;
+        }
+
+        .nav-actions {
+          gap: 0.35rem;
+          width: 100%;
+          justify-content: space-between;
+          padding-top: 0.4rem;
+          border-top: 1px solid #f1f5f9;
+        }
+
+        .nav-actions .btn {
+          padding: 0.45rem 0.6rem;
+          font-size: 0.78rem;
+          flex: 1;
+        }
+
+        .btn-text-mobile-hide {
+          display: none;
+        }
+
+        .main-content {
+          padding: 1rem 0.75rem 3rem;
+        }
       }
     </style>
   </head>
@@ -158,23 +198,23 @@ const { title = 'Panel de Administración - AIDMUR', username = 'Administrador' 
     <header class="admin-navbar">
       <div class="nav-container">
         <a href="/admin" class="brand-group">
-          <img src="/logoaidmur.jpeg" alt="AIDMUR Logo" width="34" height="34" style="border-radius: 8px; object-fit: contain;" />
-          <span style="font-weight: 800; font-size: 1.1rem; color: #0f172a;">AIDMUR</span>
+          <img src="/logoaidmur.jpeg" alt="AIDMUR Logo" width="30" height="30" style="border-radius: 6px; object-fit: contain;" />
+          <span class="brand-name" style="font-weight: 800; font-size: 1.05rem; color: #0f172a;">AIDMUR</span>
           <span class="brand-badge">Admin</span>
         </a>
 
         <div class="nav-actions">
-          <a href="/" target="_blank" class="btn btn-outline" style="font-size: 0.82rem;">
-            <span>🌐</span> Ver Web Pública
+          <a href="/" target="_blank" class="btn btn-outline" title="Ver Web Pública">
+            <span>🌐</span> <span class="btn-text-mobile-hide">Web Pública</span>
           </a>
-          <a href="/admin" class="btn btn-outline" style="font-size: 0.82rem;">
-            <span>📋</span> Comunicados
+          <a href="/admin" class="btn btn-outline" title="Lista de Comunicados">
+            <span>📋</span> <span class="btn-text-mobile-hide">Listado</span>
           </a>
-          <a href="/admin/nuevo" class="btn btn-primary" style="font-size: 0.82rem;">
-            <span>➕</span> Nuevo Comunicado
+          <a href="/admin/nuevo" class="btn btn-primary" title="Redactar Nuevo Comunicado">
+            <span>➕</span> <span>Nuevo</span>
           </a>
-          <a href="/api/auth/logout" class="btn btn-danger-outline" style="font-size: 0.82rem;">
-            <span>🚪</span> Salir
+          <a href="/api/auth/logout" class="btn btn-danger-outline" title="Cerrar Sesión">
+            <span>🚪</span> <span class="btn-text-mobile-hide">Salir</span>
           </a>
         </div>
       </div>

@@ -27,47 +27,47 @@ function formatDate(dateStr: string) {
 ---
 
 <AdminLayout title="Panel de Gestión de Comunicados - AIDMUR" username={session.username}>
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
     <div>
-      <h1 style="font-size: 1.85rem; font-weight: 800; color: #0f172a; margin-bottom: 0.35rem;">
+      <h1 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin-bottom: 0.25rem;">
         Gestión de Comunicados
       </h1>
-      <p style="color: #64748b; font-size: 0.95rem;">
+      <p style="color: #64748b; font-size: 0.9rem;">
         Crea, edita y organiza las notas de prensa y comunicados de AIDMUR.
       </p>
     </div>
     <div>
-      <a href="/admin/nuevo" class="btn btn-primary" style="padding: 0.75rem 1.35rem; font-size: 0.95rem; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);">
-        <span>➕</span> Redactar Nuevo Comunicado
+      <a href="/admin/nuevo" class="btn btn-primary" style="padding: 0.65rem 1.2rem; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);">
+        <span>➕</span> Redactar Comunicado
       </a>
     </div>
   </div>
 
   <!-- Metric Badges -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
-    <div class="card" style="padding: 1.25rem;">
-      <div style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 0.35rem;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+    <div class="card" style="padding: 1rem;">
+      <div style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 0.25rem;">
         Total Comunicados
       </div>
-      <div style="font-size: 1.85rem; font-weight: 800; color: #0f172a;">
+      <div style="font-size: 1.6rem; font-weight: 800; color: #0f172a;">
         {allPosts.length}
       </div>
     </div>
 
-    <div class="card" style="padding: 1.25rem;">
-      <div style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 0.35rem;">
-        Publicados desde Panel
+    <div class="card" style="padding: 1rem;">
+      <div style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 0.25rem;">
+        Creados desde Panel
       </div>
-      <div style="font-size: 1.85rem; font-weight: 800; color: #059669;">
+      <div style="font-size: 1.6rem; font-weight: 800; color: #059669;">
         {customPosts.length}
       </div>
     </div>
 
-    <div class="card" style="padding: 1.25rem;">
-      <div style="font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 0.35rem;">
+    <div class="card" style="padding: 1rem;">
+      <div style="font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 0.25rem;">
         Borradores
       </div>
-      <div style="font-size: 1.85rem; font-weight: 800; color: #f59e0b;">
+      <div style="font-size: 1.6rem; font-weight: 800; color: #f59e0b;">
         {allPosts.filter(p => p.is_draft).length}
       </div>
     </div>
@@ -75,20 +75,20 @@ function formatDate(dateStr: string) {
 
   <!-- Posts Table Card -->
   <div class="card" style="padding: 0; overflow: hidden;">
-    <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #e2e8f0; background: #fafafa; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
-      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
-        <h2 style="font-size: 1.1rem; font-weight: 700; color: #0f172a;">
+    <div style="padding: 1rem 1.25rem; border-bottom: 1px solid #e2e8f0; background: #fafafa; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+      <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+        <h2 style="font-size: 1.05rem; font-weight: 700; color: #0f172a;">
           Lista de Comunicados
         </h2>
-        <span id="pagination-info-top" style="font-size: 0.82rem; color: #64748b; background: #f1f5f9; padding: 0.2rem 0.6rem; border-radius: 6px;">
+        <span id="pagination-info-top" style="font-size: 0.78rem; color: #64748b; background: #f1f5f9; padding: 0.15rem 0.5rem; border-radius: 6px;">
           Cargando...
         </span>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; width: auto;" class="filter-controls-group">
         <div style="display: flex; align-items: center; gap: 0.35rem;">
-          <label for="per-page-select" style="font-size: 0.82rem; color: #64748b; font-weight: 600;">Ver:</label>
-          <select id="per-page-select" style="padding: 0.35rem 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.82rem; outline: none; background: white;">
+          <label for="per-page-select" style="font-size: 0.8rem; color: #64748b; font-weight: 600;">Ver:</label>
+          <select id="per-page-select" style="padding: 0.35rem 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.8rem; outline: none; background: white;">
             <option value="20" selected>20 por pág.</option>
             <option value="50">50 por pág.</option>
             <option value="100">100 por pág.</option>
@@ -99,75 +99,75 @@ function formatDate(dateStr: string) {
         <input 
           type="text" 
           id="search-table" 
-          placeholder="Buscar por título..." 
-          style="padding: 0.45rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.88rem; outline: none; width: 220px;"
+          placeholder="Buscar comunicado..." 
+          style="padding: 0.4rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.85rem; outline: none; width: 180px;"
         />
       </div>
     </div>
 
     <div style="overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;" id="posts-table">
+      <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem;" id="posts-table">
         <thead>
-          <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; color: #64748b; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">
-            <th style="padding: 0.85rem 1.25rem;">Título</th>
-            <th style="padding: 0.85rem 1rem;">Categorías</th>
-            <th style="padding: 0.85rem 1rem;">Fecha y Hora</th>
-            <th style="padding: 0.85rem 1rem;">Estado</th>
-            <th style="padding: 0.85rem 1.25rem; text-align: right;">Acciones</th>
+          <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; color: #64748b; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+            <th style="padding: 0.75rem 1rem;">Título</th>
+            <th style="padding: 0.75rem 0.85rem;">Categorías</th>
+            <th style="padding: 0.75rem 0.85rem;">Fecha y Hora</th>
+            <th style="padding: 0.75rem 0.85rem;">Estado</th>
+            <th style="padding: 0.75rem 1rem; text-align: right;">Acciones</th>
           </tr>
         </thead>
         <tbody style="divide-y: 1px solid #f1f5f9;" id="posts-tbody">
           {allPosts.map((post) => (
             <tr class="post-row" style="border-bottom: 1px solid #f1f5f9; transition: background 0.1s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'">
-              <td style="padding: 1rem 1.25rem; max-width: 420px;">
-                <div style="font-weight: 700; color: #0f172a; line-height: 1.35; margin-bottom: 0.25rem;" class="post-title">
+              <td style="padding: 0.85rem 1rem; max-width: 380px;">
+                <div style="font-weight: 700; color: #0f172a; line-height: 1.35; margin-bottom: 0.2rem;" class="post-title">
                   {post.title}
                 </div>
-                <div style="font-size: 0.78rem; color: #94a3b8;">
+                <div style="font-size: 0.75rem; color: #94a3b8;">
                   Slug: /{post.slug}
                 </div>
               </td>
-              <td style="padding: 1rem;">
-                <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+              <td style="padding: 0.85rem;">
+                <div style="display: flex; flex-wrap: wrap; gap: 0.25rem;">
                   {post.categories?.map((cat) => (
-                    <span style="background: #f1f5f9; color: #475569; font-size: 0.75rem; font-weight: 600; padding: 0.15rem 0.45rem; border-radius: 4px;">
+                    <span style="background: #f1f5f9; color: #475569; font-size: 0.72rem; font-weight: 600; padding: 0.12rem 0.4rem; border-radius: 4px;">
                       {cat.name}
                     </span>
                   ))}
                 </div>
               </td>
-              <td style="padding: 1rem; color: #475569; font-size: 0.85rem; white-space: nowrap;">
+              <td style="padding: 0.85rem; color: #475569; font-size: 0.82rem; white-space: nowrap;">
                 {formatDate(post.date)}
               </td>
-              <td style="padding: 1rem; white-space: nowrap;">
+              <td style="padding: 0.85rem; white-space: nowrap;">
                 {post.is_draft ? (
-                  <span style="background: #fef3c7; color: #92400e; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid #fde68a;">
+                  <span style="background: #fef3c7; color: #92400e; font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 6px; border: 1px solid #fde68a;">
                     Borrador
                   </span>
                 ) : (
-                  <span style="background: #ecfdf5; color: #065f46; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid #a7f3d0;">
+                  <span style="background: #ecfdf5; color: #065f46; font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 6px; border: 1px solid #a7f3d0;">
                     Publicado
                   </span>
                 )}
               </td>
-              <td style="padding: 1rem 1.25rem; text-align: right; white-space: nowrap;">
-                <div style="display: inline-flex; gap: 0.5rem;">
+              <td style="padding: 0.85rem 1rem; text-align: right; white-space: nowrap;">
+                <div style="display: inline-flex; gap: 0.35rem;">
                   <a 
                     href={`/articulo/${post.slug}`} 
                     target="_blank" 
                     class="btn btn-outline" 
-                    style="padding: 0.35rem 0.65rem; font-size: 0.8rem;"
+                    style="padding: 0.3rem 0.55rem; font-size: 0.78rem;"
                     title="Ver en la web"
                   >
-                    👁️ Ver
+                    👁️
                   </a>
                   <a 
                     href={`/admin/editar/${post.id}`} 
                     class="btn btn-outline" 
-                    style="padding: 0.35rem 0.65rem; font-size: 0.8rem; color: #059669; border-color: #a7f3d0;"
+                    style="padding: 0.3rem 0.55rem; font-size: 0.78rem; color: #059669; border-color: #a7f3d0;"
                     title="Editar comunicado"
                   >
-                    ✏️ Editar
+                    ✏️
                   </a>
                   {post.id > 1907 && (
                     <button 
@@ -175,7 +175,7 @@ function formatDate(dateStr: string) {
                       class="btn btn-danger-outline delete-btn" 
                       data-id={post.id}
                       data-title={post.title}
-                      style="padding: 0.35rem 0.65rem; font-size: 0.8rem;"
+                      style="padding: 0.3rem 0.55rem; font-size: 0.78rem;"
                       title="Eliminar comunicado"
                     >
                       🗑️
@@ -189,31 +189,56 @@ function formatDate(dateStr: string) {
       </table>
     </div>
 
-    <!-- Pagination Controls Footer -->
-    <div style="padding: 1rem 1.5rem; border-top: 1px solid #e2e8f0; background: #fafafa; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-      <div id="pagination-info" style="font-size: 0.85rem; color: #64748b;">
+    <!-- Responsive Pagination Footer -->
+    <div style="padding: 0.85rem 1.25rem; border-top: 1px solid #e2e8f0; background: #fafafa; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;" class="pagination-container">
+      <div id="pagination-info" style="font-size: 0.82rem; color: #64748b;">
         Mostrando comunicados
       </div>
 
-      <div style="display: flex; align-items: center; gap: 0.4rem;">
-        <button type="button" id="first-page-btn" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;">
-          « Primera
+      <div style="display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap;" class="pagination-buttons">
+        <button type="button" id="first-page-btn" class="btn btn-outline" style="padding: 0.3rem 0.55rem; font-size: 0.78rem;" title="Primera Página">
+          <span>«</span> <span class="hide-on-mobile">Primera</span>
         </button>
-        <button type="button" id="prev-page-btn" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;">
-          ‹ Anterior
+        <button type="button" id="prev-page-btn" class="btn btn-outline" style="padding: 0.3rem 0.55rem; font-size: 0.78rem;" title="Página Anterior">
+          <span>‹</span> <span class="hide-on-mobile">Anterior</span>
         </button>
-        <span id="page-indicator" style="font-size: 0.85rem; font-weight: 700; color: #0f172a; padding: 0 0.5rem;">
-          Página 1 de 1
+        <span id="page-indicator" style="font-size: 0.82rem; font-weight: 700; color: #0f172a; padding: 0 0.35rem; white-space: nowrap;">
+          Pág. 1 / 1
         </span>
-        <button type="button" id="next-page-btn" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;">
-          Siguiente ›
+        <button type="button" id="next-page-btn" class="btn btn-outline" style="padding: 0.3rem 0.55rem; font-size: 0.78rem;" title="Página Siguiente">
+          <span class="hide-on-mobile">Siguiente</span> <span>›</span>
         </button>
-        <button type="button" id="last-page-btn" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;">
-          Última »
+        <button type="button" id="last-page-btn" class="btn btn-outline" style="padding: 0.3rem 0.55rem; font-size: 0.78rem;" title="Última Página">
+          <span class="hide-on-mobile">Última</span> <span>»</span>
         </button>
       </div>
     </div>
   </div>
+
+  <style>
+    @media (max-width: 640px) {
+      .filter-controls-group {
+        width: 100% !important;
+        justify-content: space-between;
+      }
+      .filter-controls-group input {
+        flex: 1;
+        width: auto !important;
+      }
+      .pagination-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .pagination-buttons {
+        justify-content: center;
+        width: 100%;
+      }
+      .hide-on-mobile {
+        display: none !important;
+      }
+    }
+  </style>
 
   <script>
     const searchInput = document.getElementById('search-table') as HTMLInputElement;
@@ -258,12 +283,12 @@ function formatDate(dateStr: string) {
 
       // Update indicators
       const textInfo = totalItems > 0 
-        ? `Mostrando ${startIndex + 1} - ${endIndex} de ${totalItems} comunicados`
-        : '0 comunicados encontrados';
+        ? `Mostrando ${startIndex + 1} - ${endIndex} de ${totalItems}`
+        : '0 comunicados';
 
       if (paginationInfo) paginationInfo.textContent = textInfo;
       if (paginationInfoTop) paginationInfoTop.textContent = textInfo;
-      if (pageIndicator) pageIndicator.textContent = `Página ${currentPage} de ${totalPages}`;
+      if (pageIndicator) pageIndicator.textContent = `Pág. ${currentPage} / ${totalPages}`;
 
       // Button states
       if (firstBtn) firstBtn.disabled = currentPage === 1;
@@ -299,7 +324,7 @@ function formatDate(dateStr: string) {
       if (currentPage > 1) {
         currentPage--;
         updatePagination();
-        window.scrollTo({ top: 200, behavior: 'smooth' });
+        window.scrollTo({ top: 150, behavior: 'smooth' });
       }
     });
 
@@ -308,20 +333,20 @@ function formatDate(dateStr: string) {
       if (currentPage < totalPages) {
         currentPage++;
         updatePagination();
-        window.scrollTo({ top: 200, behavior: 'smooth' });
+        window.scrollTo({ top: 150, behavior: 'smooth' });
       }
     });
 
     firstBtn?.addEventListener('click', () => {
       currentPage = 1;
       updatePagination();
-      window.scrollTo({ top: 200, behavior: 'smooth' });
+      window.scrollTo({ top: 150, behavior: 'smooth' });
     });
 
     lastBtn?.addEventListener('click', () => {
       currentPage = Math.ceil(filteredRows.length / itemsPerPage);
       updatePagination();
-      window.scrollTo({ top: 200, behavior: 'smooth' });
+      window.scrollTo({ top: 150, behavior: 'smooth' });
     });
 
     // Initial render
