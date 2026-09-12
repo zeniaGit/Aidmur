@@ -1,24 +1,22 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getAllPosts, getPostBySlug } from '../../lib/posts';
+import { getAllPosts } from '../../lib/posts';
 
-export const prerender = false;
-
-const { slug } = Astro.params;
-if (!slug) {
-  return Astro.redirect('/articulos');
+export async function getStaticPaths() {
+  const allPosts = getAllPosts(false);
+  return allPosts
+    .filter(post => Boolean(post.slug))
+    .map((post, index) => ({
+      params: { slug: post.slug },
+      props: {
+        post,
+        prevPost: index < allPosts.length - 1 ? allPosts[index + 1] : null,
+        nextPost: index > 0 ? allPosts[index - 1] : null,
+      },
+    }));
 }
 
-const allPosts = getAllPosts(false);
-const post = allPosts.find(p => p.slug === slug);
-
-if (!post) {
-  return Astro.redirect('/404');
-}
-
-const index = allPosts.findIndex(p => p.slug === slug);
-const prevPost = index < allPosts.length - 1 ? allPosts[index + 1] : null;
-const nextPost = index > 0 ? allPosts[index - 1] : null;
+const { post, prevPost, nextPost } = Astro.props;
 
 function formatDate(dateStr: string) {
   if (!dateStr) return '';

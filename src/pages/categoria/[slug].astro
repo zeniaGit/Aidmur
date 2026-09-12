@@ -3,22 +3,41 @@ import Layout from '../../layouts/Layout.astro';
 import { getAllPosts } from '../../lib/posts';
 import categories from '../../data/categories.json';
 
-export const prerender = false;
+export async function getStaticPaths() {
+  const allPosts = getAllPosts(false);
+  const categoryMap = new Map<string, { name: string; slug: string }>();
 
-const { slug } = Astro.params;
-if (!slug) {
-  return Astro.redirect('/articulos');
+  for (const cat of categories) {
+    if (cat.slug) {
+      categoryMap.set(cat.slug.toLowerCase(), { name: cat.name, slug: cat.slug });
+    }
+  }
+
+  for (const post of allPosts) {
+    if (post.categories) {
+      for (const cat of post.categories) {
+        if (cat.slug && !categoryMap.has(cat.slug.toLowerCase())) {
+          categoryMap.set(cat.slug.toLowerCase(), {
+            name: cat.name || cat.slug,
+            slug: cat.slug,
+          });
+        }
+      }
+    }
+  }
+
+  return Array.from(categoryMap.values()).map((category) => {
+    const filteredPosts = allPosts.filter(p => 
+      p.categories && p.categories.some(c => c.slug?.toLowerCase() === category.slug.toLowerCase())
+    );
+    return {
+      params: { slug: category.slug },
+      props: { category, filteredPosts },
+    };
+  });
 }
 
-const category = categories.find(c => c.slug === slug) || {
-  name: slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' '),
-  slug: slug,
-};
-
-const allPosts = getAllPosts(false);
-const filteredPosts = allPosts.filter(p => 
-  p.categories && p.categories.some(c => c.slug === slug || c.slug.toLowerCase() === slug.toLowerCase())
-);
+const { category, filteredPosts } = Astro.props;
 
 function formatDate(dateStr: string) {
   if (!dateStr) return '';

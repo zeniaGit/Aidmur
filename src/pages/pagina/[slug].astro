@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import pages from '../../data/pages.json';
 import DenunciasSection from '../../components/DenunciasSection.astro';
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
   return pages.map((page) => ({
     params: { slug: page.slug },
     props: { page },
